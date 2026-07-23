@@ -114,6 +114,31 @@
   }, { threshold: 0.15 });
   document.querySelectorAll(".ptable").forEach(function (t) { rowsIo.observe(t); });
 
+  /* ---------- price table: swipe guide overlay ---------- */
+  var guideBox = document.querySelector(".price__tablebox");
+  var guide = document.getElementById("swipeGuide");
+  if (guideBox && guide && !reduced) {
+    var guideScroll = guideBox.querySelector(".price__scroll");
+    var guideTimer = null;
+    var hideGuide = function () {
+      clearTimeout(guideTimer);
+      guide.classList.remove("is-on");
+    };
+    var guideIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        guideIo.disconnect();
+        /* 表が実際に横へはみ出している時だけ(=スマホ幅)出す */
+        if (guideScroll.scrollWidth > guideScroll.clientWidth + 8) {
+          guide.classList.add("is-on");
+          guideTimer = setTimeout(hideGuide, 4600);
+        }
+      });
+    }, { threshold: 0.25 });
+    guideIo.observe(guideBox);
+    guideScroll.addEventListener("scroll", hideGuide, { once: true, passive: true });
+  }
+
   /* ---------- counter ---------- */
   var cntIo = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {

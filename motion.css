@@ -338,7 +338,28 @@ ul{ margin:0; padding:0; list-style:none; }
   font-size:.82rem; color:var(--ink-3); margin-bottom:12px;
 }
 .price__swipe svg{ width:20px; height:20px; }
+.price__tablebox{ position:relative; }
 .price__scroll{ overflow-x:auto; border-radius:var(--radius); box-shadow:var(--shadow); background:#fff; }
+/* 表が画面に入ったら「横にスワイプ」の案内をオーバーレイ表示。
+   pointer-events:noneなので案内が出たままでもスワイプ操作を邪魔しない */
+.swipe-guide{
+  position:absolute; inset:0; z-index:3; border-radius:var(--radius);
+  background:rgba(90,71,51,.32); pointer-events:none;
+  opacity:0; visibility:hidden; transition:opacity .5s var(--ease-out), visibility 0s .5s;
+}
+.swipe-guide.is-on{ opacity:1; visibility:visible; transition:opacity .5s var(--ease-out); }
+.swipe-guide__card{
+  /* 表が縦に長くてもスクロール位置に追従して画面中央あたりに居続ける */
+  position:sticky; top:40vh; width:fit-content; margin:14px auto 0;
+  display:flex; align-items:center; gap:12px;
+  background:#fff; border-radius:999px; padding:14px 26px; box-shadow:var(--shadow-lg);
+  font-family:"Zen Maru Gothic", serif; font-weight:700; font-size:.95rem; color:var(--ink);
+}
+.swipe-guide__hand{ font-size:1.6rem; animation:swipeHand 1.6s ease-in-out infinite; }
+@keyframes swipeHand{
+  0%,100%{ transform:translateX(14px) rotate(10deg); }
+  50%{ transform:translateX(-14px) rotate(-10deg); }
+}
 /* スマホでは犬種列を左に固定して、スワイプしても犬種が見えるように */
 .ptable .breed, .ptable thead th:first-child{
   position:sticky; left:0; z-index:2; background:#fff;
