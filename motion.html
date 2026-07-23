@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja" class="js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dog salon IPPU｜motion ver.（動きのあるデモ）</title>
+<meta name="description" content="大阪市城東区今福南のトリミングサロン dog salon IPPU（イップ）。スクロール演出を強めたデザイン案。">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+<link rel="stylesheet" href="motion.css">
+</head>
+<body>
+
+<!-- scroll progress (top bar + walking dog) -->
+<div class="progress" aria-hidden="true">
+  <div class="progress__bar" id="progressBar"></div>
+  <div class="progress__dog" id="progressDog"><img src="assets/dachshund.png" alt=""></div>
+</div>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <div class="nav__in">
+    <a class="nav__logo" href="#top" aria-label="dog salon IPPU トップへ">
+      <img src="assets/logo-mark.png" alt="">
+      <span><b>dog salon IPPU</b><small>TRIMMING SALON</small></span>
+    </a>
+    <nav class="nav__links">
+      <a href="#concept">こだわり</a>
+      <a href="#staff">スタッフ</a>
+      <a href="#awards">受賞歴</a>
+      <a href="#course">コース</a>
+      <a href="#price">料金</a>
+      <a href="#gallery">店内</a>
+      <a href="#access">アクセス</a>
+    </nav>
+    <a class="nav__cta" href="https://page.line.me/010bzmaf" target="_blank" rel="noopener">
+      <svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.9 3 3 6.3 3 10.4c0 2.4 1.4 4.5 3.6 5.9-.1.6-.6 2-.7 2.4 0 .2.1.4.4.2.3-.1 2.4-1.6 3.3-2.2.8.1 1.6.2 2.4.2 5.1 0 9-3.3 9-7.4S17.1 3 12 3Z"/></svg>
+      ご予約
+    </a>
+    <button class="nav__burger" id="burger" aria-label="メニューを開く" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- full screen menu (mobile) -->
+<div class="menu" id="menuOverlay" aria-hidden="true">
+  <nav class="menu__links">
+    <a href="#concept"><small>CONCEPT</small>こだわり</a>
+    <a href="#staff"><small>STAFF</small>スタッフ</a>
+    <a href="#awards"><small>AWARDS</small>受賞歴</a>
+    <a href="#course"><small>COURSE</small>コース</a>
+    <a href="#price"><small>PRICE</small>料金</a>
+    <a href="#gallery"><small>GALLERY</small>店内</a>
+    <a href="#access"><small>ACCESS</small>アクセス</a>
+  </nav>
+  <a class="menu__line" href="https://page.line.me/010bzmaf" target="_blank" rel="noopener">LINEでご予約</a>
+</div>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero__bg" data-lax="-0.18" data-lax-scale="1.12">
+    <img src="assets/storefront.jpg" alt="">
+  </div>
+  <div class="hero__veil"></div>
+  <div class="hero__dots" aria-hidden="true">
+    <span class="fdot" data-lax="0.10" style="width:180px;height:180px;background:var(--butter-deep);top:12%;left:4%;"></span>
+    <span class="fdot" data-lax="0.22" style="width:90px;height:90px;background:var(--lime);top:24%;right:10%;opacity:.6;"></span>
+    <span class="fdot" data-lax="0.16" style="width:120px;height:120px;background:var(--orange-soft);bottom:18%;right:22%;opacity:.55;"></span>
+    <span class="fdot" data-lax="0.30" style="width:60px;height:60px;background:var(--butter);bottom:30%;left:14%;opacity:.6;"></span>
+  </div>
+  <div class="hero__in">
+    <p class="hero__eyebrow rv" data-rv="up">OSAKA · JOTO — TRIMMING SALON</p>
+    <h1 class="hero__title js-split" aria-label="キラキラ笑顔に、なれる場所。">キラキラ笑顔に、なれる場所。</h1>
+    <p class="hero__sub rv" data-rv="up" data-delay="900">ワンちゃんも、飼い主さまも。<br>大阪市城東区・今福鶴見のトリミングサロン dog salon IPPU</p>
+    <div class="hero__actions rv" data-rv="up" data-delay="1100">
+      <a class="btn btn--line" href="https://page.line.me/010bzmaf" target="_blank" rel="noopener">
+        <svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.9 3 3 6.3 3 10.4c0 2.4 1.4 4.5 3.6 5.9-.1.6-.6 2-.7 2.4 0 .2.1.4.4.2.3-.1 2.4-1.6 3.3-2.2.8.1 1.6.2 2.4.2 5.1 0 9-3.3 9-7.4S17.1 3 12 3Z"/></svg>
+        LINEでご予約
+      </a>
+      <a class="btn btn--ghost" href="#concept">IPPUのこだわり ↓</a>
+    </div>
+  </div>
+  <div class="hero__scroll" aria-hidden="true"><span>SCROLL</span><i></i></div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span>DOG SALON IPPU&ensp;🐾&ensp;TRIMMING&ensp;🐾&ensp;SKIN CARE&ensp;🐾&ensp;HAPPY SMILE&ensp;🐾&ensp;</span>
+    <span>DOG SALON IPPU&ensp;🐾&ensp;TRIMMING&ensp;🐾&ensp;SKIN CARE&ensp;🐾&ensp;HAPPY SMILE&ensp;🐾&ensp;</span>
+  </div>
+</div>
+
+<!-- ============ CONCEPT (scrub text) ============ -->
+<section class="concept" id="concept">
+  <div class="wrap">
+    <div class="sec-head rv" data-rv="up">
+      <span class="eyebrow">CONCEPT</span>
+      <h2 class="ttl">IPPUのこだわり<span class="en">OUR THOUGHTS</span></h2>
+    </div>
+    <div class="scrub js-scrub-words">
+      <p>ワンちゃんが リラックスできる、あたたかい場所。</p>
+      <p>飼い主さまが 安心して お預けいただける場所。</p>
+      <p>ワンちゃんと 飼い主さまが、<em>キラキラした笑顔</em> になれる場所。</p>
+    </div>
+    <div class="concept__photos">
+      <figure class="rv" data-rv="left"><img src="assets/interior-reception.jpg" alt="やさしい黄色の壁と受賞トロフィーが並ぶ店内" data-lax="0.06"></figure>
+      <figure class="rv" data-rv="up" data-delay="150"><img src="assets/storefront.jpg" alt="dog salon IPPU の店頭" data-lax="-0.05"></figure>
+      <figure class="rv" data-rv="right" data-delay="300"><img src="assets/mat.jpg" alt="エントランスマット" data-lax="0.08"></figure>
+    </div>
+    <p class="concept__note rv" data-rv="up">『幸せ』を意味する黄色で包み込むロゴには、キラキラした輝きと、安心感のあるあたたかさへの想いを込めました。一頭一頭としっかり向き合い、その子に合わせたケアをご提案します。</p>
+  </div>
+</section>
+
+<!-- ============ STAFF ============ -->
+<section class="staff" id="staff">
+  <div class="wrap">
+    <div class="staff__grid">
+      <div class="staff__photo rv" data-rv="mask">
+        <img src="assets/hero.jpg" alt="オーナーグルーマー 吉岡千裕とワンちゃんたち" data-lax="0.05">
+      </div>
+      <div class="staff__body">
+        <span class="eyebrow rv" data-rv="up">OWNER / GROOMER</span>
+        <h2 class="staff__name rv" data-rv="up" data-delay="100">吉岡 千裕<small>YOSHIOKA CHIHIRO</small></h2>
+        <p class="rv" data-rv="up" data-delay="200">サロン勤めをしている頃から、『わんちゃんと飼い主さまが、キラキラした笑顔になるお迎えの時間』に、とてもやりがいと幸せを感じてきました。</p>
+        <p class="rv" data-rv="up" data-delay="300">グルーミング中はわんちゃんとコミュニケーションをとりながら、少しでもストレスのないように、その子に合ったやり方を探し、その子の可愛さを引き出せるように心がけています。お家でも崩れにくい、持ちの良いカットが得意です！</p>
+        <ul class="staff__quals">
+          <li class="rv" data-rv="up" data-delay="350"><span class="yr">2009</span>ナンバペット美容学院 研究科 卒業／JKC公認トリマー B級ライセンス</li>
+          <li class="rv" data-rv="up" data-delay="420"><span class="yr">2021</span>愛玩動物飼養管理士 1級 取得</li>
+          <li class="rv" data-rv="up" data-delay="490"><span class="yr">2022</span>HAPPY GROOMING CONTEST ダブルス部門 <b>優勝</b></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 散歩する犬（スクロール連動） -->
+<section class="dogwalk js-dogwalk" aria-hidden="true">
+  <div class="dogwalk__trail"></div>
+  <div class="dogwalk__dog"><img src="assets/dachshund.png" alt=""></div>
+</section>
+
+<!-- ============ AWARDS (horizontal scroll) ============ -->
+<section class="awards" id="awards">
+  <div class="hs js-hscroll">
+    <div class="hs__sticky">
+      <div class="hs__head">
+        <span class="eyebrow">AWARDS</span>
+        <h2 class="ttl">受賞歴・コンテスト実績<span class="en">CONTEST RESULTS</span></h2>
+        <p class="hs__lead">技術を磨きつづけるトリマーが、数々のグルーミングコンテストで評価をいただいています。<span class="hs__hint">↓ スクロールで横に進みます</span></p>
+      </div>
+      <div class="hs__track">
+        <figure class="hs__item"><img src="assets/award1.jpg" alt="コンテスト受賞の様子1"><figcaption><span class="num">2022</span>ダブルス部門 優勝</figcaption></figure>
+        <figure class="hs__item"><img src="assets/award-pink.jpg" alt="コンテスト受賞の様子2"><figcaption><span class="num">2022</span>レスキュー部門 特別賞</figcaption></figure>
+        <figure class="hs__item"><img src="assets/award2.jpg" alt="コンテスト受賞の様子3"><figcaption><span class="num">2023</span>in大阪 ダブルス部門 特別賞</figcaption></figure>
+        <figure class="hs__item"><img src="assets/award3.jpg" alt="コンテスト受賞の様子4"><figcaption><span class="num">2023</span>in福岡 ダブルス部門 特別賞</figcaption></figure>
+        <figure class="hs__item"><img src="assets/award4.jpg" alt="コンテスト受賞の様子5"><figcaption><span class="num">2024</span>in東京 サロンスタイル部門 特別賞</figcaption></figure>
+        <div class="hs__last">
+          <div class="hs__count"><span class="js-counter num" data-to="5">0</span><small>AWARDS<br>2022–2024</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COURSE (stacking cards) ============ -->
+<section class="course" id="course">
+  <div class="wrap">
+    <div class="sec-head rv" data-rv="up">
+      <span class="eyebrow">COURSE</span>
+      <h2 class="ttl">3つのケアコース<span class="en">3 CARE COURSES</span></h2>
+      <p class="lead">スキンケア・被毛ケアをしっかり取り入れた、3つのコースからお選びいただけます。</p>
+    </div>
+    <div class="stack js-stack">
+      <article class="stack__card">
+        <div class="stack__img"><img src="assets/course-1.jpg" alt="シャンプーケアのイメージ"></div>
+        <div class="stack__body">
+          <span class="stack__no num">01</span>
+          <h3>シャンプーケアコース<span class="en">SHAMPOO CARE</span></h3>
+          <p>スキンケア・被毛ケアをしっかり取り入れた、お肌トラブル予防のシャンプーコース。</p>
+          <ul>
+            <li>体調チェック</li><li>FuwaMe（炭酸ケア）</li><li>プロフェムシャンプー or シセルリノシャンプー</li><li>はみがき</li><li>保湿ケア or 被毛ケア</li><li>バスアウトミスト</li>
+          </ul>
+        </div>
+      </article>
+      <article class="stack__card stack__card--feature">
+        <div class="stack__img"><img src="assets/course-2.jpg" alt="IPPUケアコースのイメージ"></div>
+        <div class="stack__body">
+          <span class="stack__no num">02</span>
+          <h3>IPPUケアコース<span class="en">IPPU CARE</span></h3>
+          <p>シャンプーケアコース同様、しっかりケアをした後に全身カットを行うコースです。</p>
+          <ul>
+            <li><b>シャンプーケアコースの内容すべて</b></li><li>全身カット（ハサミ仕上げを含みます）</li><li>足先バリカン（ご希望の場合）</li>
+          </ul>
+        </div>
+      </article>
+      <article class="stack__card">
+        <div class="stack__img"><img src="assets/course-3.jpg" alt="ごほうびケアのイメージ"></div>
+        <div class="stack__body">
+          <span class="stack__no num">03</span>
+          <h3>ごほうびケアコース<span class="en">REWARD CARE</span></h3>
+          <p>お誕生日などのスペシャルDayに、ワンランク上のスキンケアを。</p>
+          <ul>
+            <li><b>シャンプー or IPPUケアコース</b></li><li>被毛内部補修トリートメント</li><li>ヒト幹細胞ミスト</li><li>ipsミスト</li>
+          </ul>
+          <div class="stack__opt num">＋¥3,300（〜5kg）／＋¥4,400（〜8kg）／＋¥5,500（〜12kg）</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICE ============ -->
+<section class="price" id="price">
+  <div class="wrap">
+    <div class="sec-head rv" data-rv="up">
+      <span class="eyebrow">PRICE</span>
+      <h2 class="ttl">料金表<span class="en">PRICE LIST</span></h2>
+      <p class="lead">表示価格はすべて税込です。犬種・サイズ・毛量により変動する場合があります。</p>
+    </div>
+    <p class="price__swipe" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg>表は横にスクロールできます</p>
+    <div class="price__scroll rv" data-rv="up">
+      <table class="ptable">
+        <thead>
+          <tr><th>犬種</th><th>シャンプーケア</th><th>IPPUケア</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="breed"><b>チワワ</b><span class="kg">〜4kg</span></td><td class="pr num">¥7,700〜</td><td class="pr num ippu">¥11,000〜</td></tr>
+          <tr><td class="breed"><b>パピヨン／狆</b><span class="kg">〜5kg</span></td><td class="pr num">¥8,800〜</td><td class="pr num ippu">¥11,000〜</td></tr>
+          <tr><td class="breed"><b>ヨークシャテリア</b><span class="kg">〜4kg</span></td><td class="pr num">¥7,700〜</td><td class="pr num ippu">¥12,100〜</td></tr>
+          <tr><td class="breed"><b>ダックス</b><span class="kg">〜6kg</span></td><td class="pr num">¥8,800〜</td><td class="pr num ippu">¥12,100〜</td></tr>
+          <tr><td class="breed"><b>ポメラニアン／ペキニーズ</b><span class="kg">〜4〜5kg</span></td><td class="pr num">¥9,900〜</td><td class="pr num ippu">¥13,200〜</td></tr>
+          <tr><td class="breed"><b>マルチーズ／トイプードル／Mシュナウザー／シーズー</b><span class="kg">〜4〜6kg</span></td><td class="pr num">¥8,800〜</td><td class="pr num ippu">¥15,400〜</td></tr>
+          <tr><td class="breed"><b>キャバリア</b><span class="kg">〜8kg</span></td><td class="pr num">¥11,000〜</td><td class="pr num ippu">¥14,300〜</td></tr>
+          <tr><td class="breed"><b>ビションフリーゼ</b><span class="kg">〜8kg</span></td><td class="pr num">¥11,000〜</td><td class="pr num ippu">¥17,600〜</td></tr>
+          <tr><td class="breed"><b>アメリカンコッカー</b><span class="kg">〜12kg</span></td><td class="pr num">¥12,100〜</td><td class="pr num ippu">¥17,600〜</td></tr>
+          <tr><td class="breed"><b>パグ／ボストンテリア</b><span class="kg">〜8kg</span></td><td class="pr num">¥8,800〜</td><td class="pr num">—</td></tr>
+          <tr><td class="breed"><b>フレンチブルドッグ</b><span class="kg">〜10kg</span></td><td class="pr num">¥9,900〜</td><td class="pr num">—</td></tr>
+          <tr><td class="breed"><b>柴犬／コーギー</b><span class="kg">〜10kg</span></td><td class="pr num">¥11,000〜</td><td class="pr num">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="price__reward rv" data-rv="up"><b>ごほうびケアコース</b>：シャンプー or IPPUケアコース ＋ トリートメント・ヒト幹細胞ミスト・ipsミスト<span class="num">（＋¥3,300〜、サイズによる）</span></p>
+    <ul class="price__notes">
+      <li class="rv" data-rv="up"><span class="tag">部分カット</span>¥880〜（4ヶ所以上はIPPUケアコース）</li>
+      <li class="rv" data-rv="up" data-delay="80"><span class="tag">デザインカット</span>¥1,100〜（ハート・おぱんつ・ぷりけつ など）</li>
+      <li class="rv" data-rv="up" data-delay="160"><span class="tag">サイズ・毛量</span>¥550〜／もつれ・換毛 10分毎 ¥550〜</li>
+      <li class="rv" data-rv="up" data-delay="240"><span class="tag">リピート割</span>3週間以内 -¥500／4週間以内 -¥300</li>
+    </ul>
+    <div class="price__others">
+      <article class="ocard rv" data-rv="up">
+        <h3>クイックコース</h3>
+        <p>シャンプー・ドライング・お耳の拭き取りのみ。<br><b class="num">各コース価格から -¥3,300</b></p>
+        <small>※各コースご利用後、2週間以内の方のみ</small>
+      </article>
+      <article class="ocard rv" data-rv="up" data-delay="120">
+        <h3>ショートステイ</h3>
+        <p>最初の1時間 <b class="num">¥1,100</b>／以降30分毎 <b class="num">¥550〜</b></p>
+        <small>※トリミング前後2時間は無料</small>
+      </article>
+      <article class="ocard rv" data-rv="up" data-delay="240">
+        <h3>単品メニュー</h3>
+        <p>つめ切り・耳そうじ・お顔カット・はみがき など <b class="num">¥550〜</b></p>
+        <small>※詳しくはお気軽にお問い合わせください</small>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="gallery" id="gallery">
+  <div class="wrap">
+    <div class="sec-head rv" data-rv="up">
+      <span class="eyebrow">GALLERY</span>
+      <h2 class="ttl">店内・商品のご紹介<span class="en">SHOP &amp; GOODS</span></h2>
+    </div>
+  </div>
+  <div class="gallery__grid">
+    <figure class="rv" data-rv="zoom"><img src="assets/interior-wide.jpg" alt="店内のディスプレイと物販棚" data-lax="0.04"></figure>
+    <figure class="rv" data-rv="zoom" data-delay="100"><img src="assets/products-liora.jpg" alt="ケア用品 LIORA" data-lax="-0.05"></figure>
+    <figure class="rv" data-rv="zoom" data-delay="200"><img src="assets/interior-reception.jpg" alt="受付まわり" data-lax="0.06"></figure>
+    <figure class="rv" data-rv="zoom" data-delay="150"><img src="assets/owner.jpg" alt="オーナーとワンちゃん" data-lax="-0.04"></figure>
+  </div>
+</section>
+
+<!-- ============ REVIEWS (marquee) ============ -->
+<section class="reviews" id="reviews">
+  <div class="wrap">
+    <div class="sec-head rv" data-rv="up">
+      <span class="eyebrow">VOICE</span>
+      <h2 class="ttl">お客様の声<span class="en">CUSTOMER REVIEWS</span></h2>
+      <p class="lead">Googleに寄せられた、うれしいお声をご紹介します。</p>
+    </div>
+  </div>
+  <div class="rmq" aria-label="口コミ一覧">
+    <div class="rmq__track">
+      <article class="rcard"><div class="rcard__stars">★★★★★</div><p>カット後、うちの子か分からないほど可愛くなっていました！家族や友人みんなから「すごく可愛くなったね」と言われます。接客も丁寧で大満足です☆</p><span class="rcard__src">G　Google クチコミ</span></article>
+      <article class="rcard"><div class="rcard__stars">★★★★★</div><p>トリマーさんが本当に気さくで話しやすく、分からないことも色々教えてもらえました！仕上がりもツヤツヤさらさらで大満足です！！</p><span class="rcard__src">G　Google クチコミ</span></article>
+      <article class="rcard"><div class="rcard__stars">★★★★★</div><p>IPPUさんのカットが可愛くて上手だったので、ちょっと遠くなったけどお願いしてよかったです！お写真も可愛くて大満足です！</p><span class="rcard__src">G　Google クチコミ</span></article>
+      <article class="rcard"><div class="rcard__stars">★★★★★</div><p>初めてのカットをお願いいたしました。丁寧に可愛く仕上げていただき感動です！今後もお世話になりたいサロンです。</p><span class="rcard__src">G　Google クチコミ</span></article>
+      <article class="rcard"><div class="rcard__stars">★★★★★</div><p>お迎え時のワンコを見れば楽しい時間だったことが分かります。本当にありがとうございました♥</p><span class="rcard__src">G　Google クチコミ</span></article>
+      <article class="rcard"><div class="rcard__stars">★★★★★</div><p>カット後、うちの子か分からないほど可愛くなっていました！家族や友人みんなから「すごく可愛くなったね」と言われます。接客も丁寧で大満足です☆</p><span class="rcard__src">G　Google クチコミ</span></article>
+      <article class="rcard"><div class="rcard__stars">★★★★★</div><p>トリマーさんが本当に気さくで話しやすく、分からないことも色々教えてもらえました！仕上がりもツヤツヤさらさらで大満足です！！</p><span class="rcard__src">G　Google クチコミ</span></article>
+      <article class="rcard"><div class="rcard__stars">★★★★★</div><p>IPPUさんのカットが可愛くて上手だったので、ちょっと遠くなったけどお願いしてよかったです！お写真も可愛くて大満足です！</p><span class="rcard__src">G　Google クチコミ</span></article>
+      <article class="rcard"><div class="rcard__stars">★★★★★</div><p>初めてのカットをお願いいたしました。丁寧に可愛く仕上げていただき感動です！今後もお世話になりたいサロンです。</p><span class="rcard__src">G　Google クチコミ</span></article>
+      <article class="rcard"><div class="rcard__stars">★★★★★</div><p>お迎え時のワンコを見れば楽しい時間だったことが分かります。本当にありがとうございました♥</p><span class="rcard__src">G　Google クチコミ</span></article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ACCESS ============ -->
+<section class="access" id="access">
+  <div class="wrap">
+    <div class="sec-head rv" data-rv="up">
+      <span class="eyebrow">ACCESS</span>
+      <h2 class="ttl">アクセス・ご予約<span class="en">ACCESS &amp; RESERVATION</span></h2>
+    </div>
+    <div class="access__grid">
+      <div class="access__info rv" data-rv="left">
+        <div class="irow"><span class="k">住所</span><span class="v">〒536-0003 大阪市城東区今福南4-15-22 1F</span></div>
+        <div class="irow"><span class="k">アクセス</span><span class="v">今福鶴見駅 ②番出口より南へ徒歩3分</span></div>
+        <div class="irow"><span class="k">営業時間</span><span class="v"><span class="num">10:00 – 19:00</span>／不定休</span></div>
+        <div class="irow"><span class="k">電話</span><span class="v num">080-6427-1940</span></div>
+        <div class="irow"><span class="k">LINE</span><span class="v">@dogsalon_ippu（ご予約はLINEがおすすめ）</span></div>
+        <div class="access__cta">
+          <a class="btn btn--line" href="https://page.line.me/010bzmaf" target="_blank" rel="noopener">
+            <svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.9 3 3 6.3 3 10.4c0 2.4 1.4 4.5 3.6 5.9-.1.6-.6 2-.7 2.4 0 .2.1.4.4.2.3-.1 2.4-1.6 3.3-2.2.8.1 1.6.2 2.4.2 5.1 0 9-3.3 9-7.4S17.1 3 12 3Z"/></svg>
+            LINEで予約する
+          </a>
+          <a class="btn btn--ghost" href="https://www.instagram.com/dogsalon_ippu?igshid=YmMyMTA2M2Y%3D" target="_blank" rel="noopener">Instagram</a>
+        </div>
+      </div>
+      <div class="access__map rv" data-rv="right">
+        <iframe title="dog salon IPPU の地図" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://maps.google.com/maps?q=%E5%A4%A7%E9%98%AA%E5%B8%82%E5%9F%8E%E6%9D%B1%E5%8C%BA%E4%BB%8A%E7%A6%8F%E5%8D%974-15-22&t=&z=16&ie=UTF8&iwloc=&output=embed"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="footer__big" aria-hidden="true"><span data-lax-x="-0.12">DOG SALON IPPU</span></div>
+  <div class="wrap footer__in">
+    <img class="footer__logo" src="assets/logo-light.png" alt="dog salon IPPU">
+    <p>大阪市城東区今福南のトリミングサロン。<br>ワンちゃんと飼い主さまが、キラキラ笑顔になれる場所を目指して。</p>
+    <div class="footer__copy">© dog salon IPPU. All rights reserved.｜motion demo ver.</div>
+  </div>
+</footer>
+
+<!-- floating LINE CTA -->
+<div class="float-cta">
+  <a href="https://page.line.me/010bzmaf" target="_blank" rel="noopener">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.9 3 3 6.3 3 10.4c0 2.4 1.4 4.5 3.6 5.9-.1.6-.6 2-.7 2.4 0 .2.1.4.4.2.3-.1 2.4-1.6 3.3-2.2.8.1 1.6.2 2.4.2 5.1 0 9-3.3 9-7.4S17.1 3 12 3Z"/></svg>
+    ご予約
+  </a>
+</div>
+
+<script src="motion.js"></script>
+</body>
+</html>
