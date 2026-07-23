@@ -124,19 +124,27 @@
       clearTimeout(guideTimer);
       guide.classList.remove("is-on");
     };
+    /* 表が画面に入るたびに表示し、離れたらリセット。
+       実際にスワイプした人にだけ、それ以降は出さない */
     var guideIo = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        guideIo.disconnect();
-        /* 表が実際に横へはみ出している時だけ(=スマホ幅)出す */
-        if (guideScroll.scrollWidth > guideScroll.clientWidth + 8) {
-          guide.classList.add("is-on");
-          guideTimer = setTimeout(hideGuide, 4600);
+        if (e.isIntersecting) {
+          /* 表が実際に横へはみ出している時だけ(=スマホ幅)出す */
+          if (guideScroll.scrollWidth > guideScroll.clientWidth + 8) {
+            guide.classList.add("is-on");
+            clearTimeout(guideTimer);
+            guideTimer = setTimeout(hideGuide, 6000);
+          }
+        } else {
+          hideGuide();
         }
       });
-    }, { threshold: 0.25 });
+    }, { threshold: 0.3, rootMargin: "0px 0px -15% 0px" });
     guideIo.observe(guideBox);
-    guideScroll.addEventListener("scroll", hideGuide, { once: true, passive: true });
+    guideScroll.addEventListener("scroll", function () {
+      hideGuide();
+      guideIo.disconnect();
+    }, { once: true, passive: true });
   }
 
   /* ---------- counter ---------- */
@@ -168,7 +176,12 @@
     hs.style.height = window.innerHeight + Math.max(extra, 0) + "px";
   }
 
-  /* ---------- scroll engine (rAF) ---------- */
+  /* ---------- scroll engine (rAF) ----------
+     スマホのカクつき/一瞬のブレ対策:
+     ・基準位置は事前計測してキャッシュし、毎フレームの getBoundingClientRect
+       (強制レイアウト)を無くす
+     ・フレーム内は「読み取り→書き込み」を分離してレイアウトスラッシングを防ぐ
+     ・transformは translate3d でGPU合成レイヤーに載せたまま動かす */
   var laxEls = Array.prototype.slice.call(document.querySelectorAll("[data-lax]"));
   var laxXEls = Array.prototype.slice.call(document.querySelectorAll("[data-lax-x]"));
   var bar = document.getElementById("progressBar");
@@ -178,36 +191,69 @@
   var stackCards = Array.prototype.slice.call(document.querySelectorAll(".js-stack .stack__card"));
 
   var vh = window.innerHeight;
+  var vw = window.innerWidth;
+  var docH = 1;
+  var scrubTop = 0, scrubH = 1, hsTop = 0, hsH = 1, hsExtra = 0, walkTop = 0, walkH = 1;
+
+  /* 基準位置の事前計測(ロード時・リサイズ時のみ。スクロール中は呼ばない) */
+  function measure() {
+    var y = window.scrollY;
+    vh = window.innerHeight;
+    vw = window.innerWidth;
+    docH = Math.max(1, document.documentElement.scrollHeight - vh);
+    laxEls.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      el._sp = parseFloat(el.getAttribute("data-lax"));
+      /* 適用済みのtransform分を差し引いた、文書座標での中心位置 */
+      el._mid = r.top + y - (el._ly || 0) + r.height / 2;
+    });
+    laxXEls.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      el._sp = parseFloat(el.getAttribute("data-lax-x"));
+      el._top = r.top + y; /* X移動はtopに影響しない */
+    });
+    if (scrubBox) {
+      var sr = scrubBox.getBoundingClientRect();
+      scrubTop = sr.top + y; scrubH = sr.height;
+    }
+    if (hs && hsTrack) {
+      var hr = hs.getBoundingClientRect();
+      hsTop = hr.top + y; hsH = hr.height;
+      hsExtra = hsTrack.scrollWidth - vw;
+    }
+    if (walk) {
+      var wr = walk.getBoundingClientRect();
+      walkTop = wr.top + y; walkH = wr.height;
+    }
+  }
 
   function frame() {
     var y = window.scrollY;
-    var docH = document.documentElement.scrollHeight - vh;
-    var total = docH > 0 ? y / docH : 0;
 
-    /* progress bar + dog */
+    /* --- 読み取り(stickyで位置が変わる積層カードだけは実測が必要) --- */
+    var stackRects = null;
+    if (!reduced && stackCards.length) {
+      stackRects = stackCards.map(function (c) { return c.getBoundingClientRect(); });
+    }
+
+    /* --- 書き込み --- */
+    var total = y / docH;
     bar.style.width = total * 100 + "%";
-    dog.style.transform = "translateX(" + (total * (window.innerWidth - 48)).toFixed(1) + "px) scaleX(-1)";
+    dog.style.transform = "translate3d(" + (total * (vw - 48)).toFixed(1) + "px,0,0) scaleX(-1)";
 
     if (!reduced) {
-      /* parallax (translateY) */
       laxEls.forEach(function (el) {
-        var sp = parseFloat(el.getAttribute("data-lax"));
-        var r = el.getBoundingClientRect();
-        var mid = r.top + r.height / 2 - vh / 2;
-        var scale = el.getAttribute("data-lax-scale") || "";
-        el.style.transform = "translateY(" + (-mid * sp).toFixed(1) + "px)" + (scale ? " scale(" + scale + ")" : "");
+        var t = -(el._mid - y - vh / 2) * el._sp;
+        el._ly = t;
+        el.style.transform = "translate3d(0," + t.toFixed(1) + "px,0)";
       });
-      /* parallax (translateX — footer big text) */
       laxXEls.forEach(function (el) {
-        var sp = parseFloat(el.getAttribute("data-lax-x"));
-        var r = el.getBoundingClientRect();
-        el.style.transform = "translateX(" + ((r.top - vh) * sp).toFixed(1) + "px)";
+        el.style.transform = "translate3d(" + ((el._top - y - vh) * el._sp).toFixed(1) + "px,0,0)";
       });
 
       /* scrub words */
       if (scrubBox && scrubWords.length) {
-        var r2 = scrubBox.getBoundingClientRect();
-        var p = (vh * 0.9 - r2.top) / (r2.height + vh * 0.55);
+        var p = (vh * 0.9 - (scrubTop - y)) / (scrubH + vh * 0.55);
         p = Math.max(0, Math.min(1, p));
         var onCount = p * (scrubWords.length + 2);
         scrubWords.forEach(function (w, i) {
@@ -216,32 +262,26 @@
       }
 
       /* horizontal scroll */
-      if (hs && hsTrack) {
-        var hr = hs.getBoundingClientRect();
-        var extra = hsTrack.scrollWidth - window.innerWidth;
-        if (extra > 0) {
-          var hp = Math.max(0, Math.min(1, -hr.top / (hr.height - vh)));
-          hsTrack.style.transform = "translateX(" + (-hp * extra).toFixed(1) + "px)";
-        }
+      if (hs && hsTrack && hsExtra > 0) {
+        var hp = Math.max(0, Math.min(1, (y - hsTop) / (hsH - vh)));
+        hsTrack.style.transform = "translate3d(" + (-hp * hsExtra).toFixed(1) + "px,0,0)";
       }
 
       /* stacking cards: 下のカードが重なる時に前のカードを少し縮める */
-      stackCards.forEach(function (card, i) {
-        var next = stackCards[i + 1];
-        if (!next) { card.style.transform = ""; return; }
-        var nr = next.getBoundingClientRect();
-        var cr = card.getBoundingClientRect();
-        var overlap = Math.max(0, Math.min(1, (cr.bottom - nr.top) / cr.height));
-        card.style.transform = "scale(" + (1 - overlap * 0.06).toFixed(3) + ") translateY(" + (-overlap * 12).toFixed(1) + "px)";
-        card.style.filter = "brightness(" + (1 - overlap * 0.12).toFixed(3) + ")";
-      });
+      if (stackRects) {
+        stackCards.forEach(function (card, i) {
+          if (!stackCards[i + 1]) { card.style.transform = ""; return; }
+          var cr = stackRects[i], nr = stackRects[i + 1];
+          var overlap = Math.max(0, Math.min(1, (cr.bottom - nr.top) / cr.height));
+          card.style.transform = "scale(" + (1 - overlap * 0.06).toFixed(3) + ") translateY(" + (-overlap * 12).toFixed(1) + "px)";
+          card.style.filter = "brightness(" + (1 - overlap * 0.12).toFixed(3) + ")";
+        });
+      }
 
       /* walking dog strip */
       if (walk && walkDog) {
-        var wr = walk.getBoundingClientRect();
-        var wp = (vh - wr.top) / (vh + wr.height);
-        wp = Math.max(0, Math.min(1, wp));
-        walkDog.style.transform = "translate(" + (wp * (window.innerWidth + 160) - 80) + "px, -50%) scaleX(-1)";
+        var wp = Math.max(0, Math.min(1, (vh - (walkTop - y)) / (vh + walkH)));
+        walkDog.style.transform = "translate3d(" + (wp * (vw + 160) - 80).toFixed(1) + "px,-50%,0) scaleX(-1)";
       }
     }
 
@@ -261,14 +301,16 @@
 
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", function () {
-    vh = window.innerHeight;
     sizeHs();
-    onScroll();
+    measure();
+    frame();
   });
   window.addEventListener("load", function () {
     sizeHs();
+    measure();
     frame();
   });
   sizeHs();
+  measure();
   frame();
 })();
