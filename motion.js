@@ -133,7 +133,7 @@
           if (guideScroll.scrollWidth > guideScroll.clientWidth + 8) {
             guide.classList.add("is-on");
             clearTimeout(guideTimer);
-            guideTimer = setTimeout(hideGuide, 6000);
+            guideTimer = setTimeout(hideGuide, 4500);
           }
         } else {
           hideGuide();
@@ -184,6 +184,11 @@
      ・transformは translate3d でGPU合成レイヤーに載せたまま動かす */
   var laxEls = Array.prototype.slice.call(document.querySelectorAll("[data-lax]"));
   var laxXEls = Array.prototype.slice.call(document.querySelectorAll("[data-lax-x]"));
+  /* タッチ端末では装飾パララックスを無効化:
+     スクロール中のJS transform更新は実機でどうしてもガタつくため、
+     スマホはネイティブスクロールの滑らかさを最優先する(主要演出は別系統で維持) */
+  var coarse = window.matchMedia("(pointer: coarse)").matches;
+  if (coarse) { laxEls = []; laxXEls = []; }
   var bar = document.getElementById("progressBar");
   var dog = document.getElementById("progressDog");
   var walk = document.querySelector(".js-dogwalk");
@@ -300,10 +305,16 @@
   }
 
   window.addEventListener("scroll", onScroll, { passive: true });
+  /* スマホのURLバー伸縮でもresizeが飛んでくるので、
+     スクロール中に重い再計測が走らないよう落ち着いてから1回だけ実行 */
+  var resizeTimer = null;
   window.addEventListener("resize", function () {
-    sizeHs();
-    measure();
-    frame();
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      sizeHs();
+      measure();
+      frame();
+    }, 180);
   });
   window.addEventListener("load", function () {
     sizeHs();

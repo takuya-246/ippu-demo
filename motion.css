@@ -53,8 +53,11 @@ img{ display:block; max-width:100%; }
 ul{ margin:0; padding:0; list-style:none; }
 .num{ font-family:var(--num); font-weight:600; letter-spacing:.01em; }
 .wrap{ width:100%; max-width:var(--maxw); margin-inline:auto; padding-inline:24px; }
-/* パララックス要素はGPU合成レイヤーに固定して再ラスタライズのブレを防ぐ */
-[data-lax], [data-lax-x]{ will-change:transform; }
+/* パララックス要素はGPU合成レイヤーに固定して再ラスタライズのブレを防ぐ
+   (タッチ端末ではパララックス自体を無効化するのでレイヤーも作らない) */
+@media (pointer: fine){
+  [data-lax], [data-lax-x]{ will-change:transform; }
+}
 
 .eyebrow{
   display:inline-flex; align-items:center; gap:.5em;
@@ -358,10 +361,15 @@ ul{ margin:0; padding:0; list-style:none; }
   background:#fff; border-radius:999px; padding:14px 26px; box-shadow:var(--shadow-lg);
   font-family:"Zen Maru Gothic", serif; font-weight:700; font-size:.95rem; color:var(--ink);
 }
-.swipe-guide__hand{ font-size:1.6rem; animation:swipeHand 1.6s ease-in-out infinite; }
-@keyframes swipeHand{
-  0%,100%{ transform:translateX(14px) rotate(10deg); }
-  50%{ transform:translateX(-14px) rotate(-10deg); }
+.swipe-guide__hand{ width:36px; height:24px; flex-shrink:0; color:var(--ink); }
+/* 指先の点が矢印の間を左右にすべる(線画モノトーン) */
+.swipe-guide__hand circle{
+  transform-box:fill-box; transform-origin:center;
+  animation:swipeDot 1.5s ease-in-out infinite;
+}
+@keyframes swipeDot{
+  0%,100%{ transform:translateX(2.5px); }
+  50%{ transform:translateX(-2.5px); }
 }
 /* スマホでは犬種列を左に固定して、スワイプしても犬種が見えるように */
 .ptable .breed, .ptable thead th:first-child{
