@@ -89,9 +89,11 @@ ul{ margin:0; padding:0; list-style:none; }
    ========================================================= */
 .progress{ position:fixed; top:0; left:0; right:0; height:5px; z-index:1000; pointer-events:none; }
 .progress__bar{
-  height:100%; width:0%;
+  height:100%; width:100%;
   background:linear-gradient(90deg, var(--butter-deep), var(--orange));
   border-radius:0 3px 3px 0;
+  /* widthではなくscaleXで伸ばす: レイアウトを起こさずGPUだけで完結させる */
+  transform:scaleX(0); transform-origin:0 50%; will-change:transform;
 }
 .progress__dog{ position:absolute; top:1px; left:0; width:44px; transform:translateX(-100%); }
 .progress__dog img{ width:100%; filter:drop-shadow(0 2px 3px rgba(90,71,51,.25)); animation:dogTrot .5s steps(2) infinite; }
@@ -125,6 +127,10 @@ ul{ margin:0; padding:0; list-style:none; }
 .nav__cta:hover{ transform:translateY(-2px); }
 .nav__cta .ic{ width:16px; height:16px; }
 .nav--scrolled{ background:rgba(255,253,246,.92); backdrop-filter:blur(10px); box-shadow:var(--shadow-sm); }
+/* スマホではすりガラス(backdrop-filter)がスクロール中のチラつき源になるため不透明にする */
+@media (pointer: coarse){
+  .nav--scrolled{ backdrop-filter:none; background:rgba(255,253,246,.97); }
+}
 .nav__burger{ display:none; }
 
 /* hero上では白文字 */

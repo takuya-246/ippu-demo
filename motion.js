@@ -199,6 +199,8 @@
   var vw = window.innerWidth;
   var docH = 1;
   var scrubTop = 0, scrubH = 1, hsTop = 0, hsH = 1, hsExtra = 0, walkTop = 0, walkH = 1;
+  var stackBox = document.querySelector(".js-stack");
+  var stackTop = 0, stackH = 1;
 
   /* 基準位置の事前計測(ロード時・リサイズ時のみ。スクロール中は呼ばない) */
   function measure() {
@@ -230,20 +232,29 @@
       var wr = walk.getBoundingClientRect();
       walkTop = wr.top + y; walkH = wr.height;
     }
+    if (stackBox) {
+      var str = stackBox.getBoundingClientRect();
+      stackTop = str.top + y; stackH = str.height;
+    }
+  }
+
+  /* 対象セクションが画面の近くにある時だけ処理する(画面外の計算を毎フレームしない) */
+  function near(y, top, h, pad) {
+    return y + vh > top - pad && y < top + h + pad;
   }
 
   function frame() {
     var y = window.scrollY;
 
-    /* --- 読み取り(stickyで位置が変わる積層カードだけは実測が必要) --- */
+    /* --- 読み取り(stickyで位置が変わる積層カードだけは、画面近くにある時のみ実測) --- */
     var stackRects = null;
-    if (!reduced && stackCards.length) {
+    if (!reduced && stackCards.length && near(y, stackTop, stackH, vh)) {
       stackRects = stackCards.map(function (c) { return c.getBoundingClientRect(); });
     }
 
     /* --- 書き込み --- */
     var total = y / docH;
-    bar.style.width = total * 100 + "%";
+    bar.style.transform = "scaleX(" + Math.min(total, 1).toFixed(4) + ")";
     dog.style.transform = "translate3d(" + (total * (vw - 48)).toFixed(1) + "px,0,0) scaleX(-1)";
 
     if (!reduced) {
@@ -257,7 +268,7 @@
       });
 
       /* scrub words */
-      if (scrubBox && scrubWords.length) {
+      if (scrubBox && scrubWords.length && near(y, scrubTop, scrubH, vh)) {
         var p = (vh * 0.9 - (scrubTop - y)) / (scrubH + vh * 0.55);
         p = Math.max(0, Math.min(1, p));
         var onCount = p * (scrubWords.length + 2);
@@ -267,7 +278,7 @@
       }
 
       /* horizontal scroll */
-      if (hs && hsTrack && hsExtra > 0) {
+      if (hs && hsTrack && hsExtra > 0 && near(y, hsTop, hsH, vh)) {
         var hp = Math.max(0, Math.min(1, (y - hsTop) / (hsH - vh)));
         hsTrack.style.transform = "translate3d(" + (-hp * hsExtra).toFixed(1) + "px,0,0)";
       }
@@ -284,7 +295,7 @@
       }
 
       /* walking dog strip */
-      if (walk && walkDog) {
+      if (walk && walkDog && near(y, walkTop, walkH, vh * 0.5)) {
         var wp = Math.max(0, Math.min(1, (vh - (walkTop - y)) / (vh + walkH)));
         walkDog.style.transform = "translate3d(" + (wp * (vw + 160) - 80).toFixed(1) + "px,-50%,0) scaleX(-1)";
       }
