@@ -191,6 +191,11 @@ ul{ margin:0; padding:0; list-style:none; }
   -webkit-mask:radial-gradient(circle at 42% 38%, #000 48%, rgba(0,0,0,.6) 68%, transparent 82%);
   mask:radial-gradient(circle at 42% 38%, #000 48%, rgba(0,0,0,.6) 68%, transparent 82%);
 }
+/* スマホ(特に120Hz端末)では画像上のblurが毎フレームの合成コストになりガタつくため無効化。
+   マスクの縁ぼかしだけでも水彩の柔らかさは保てる */
+@media (pointer: coarse){
+  .fdot{ filter:none; opacity:.45; }
+}
 .hero__in{ position:relative; z-index:3; padding:120px 24px 90px; max-width:900px; }
 .hero__eyebrow{
   font-family:var(--num); font-weight:600; letter-spacing:.42em; text-indent:.42em;
